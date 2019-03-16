@@ -16,21 +16,21 @@ class Tree {
 		if (node === null) {
 			this.root = new Node(data);
 			return;
-		} else{
-			const searchTree = (data) =>{
-				if (data < node.data){
-					if(node.left === null){
+		} else {
+			const searchTree = (data) => {
+				if (data < node.data) {
+					if (node.left === null) {
 						node.left = new Node(data);
 						return;
-					} else if(node.left !== null){
+					} else if (node.left !== null) {
 						return searchTree(node.left);
 					}
-				} else if(data > node.data){
-					if(node.right === null){
+				} else if (data > node.data) {
+					if (node.right === null) {
 						node.left = new Node(data);
 						return;
 					}
-				} else{
+				} else {
 					return null;
 				}
 			};
@@ -41,23 +41,39 @@ class Tree {
 	findMax() {
 		let current = this.root;
 		while (current.right !== null) {
-		  current = current.right;
+			current = current.right;
 		}
 		return current.data;
-	 }
-	 find(data) {
+	}
+	find(data) {
 		let current = this.root;
 		while (current.data !== data) {
+			if (data < current.data) {
+				current = current.left;
+			} else {
+				current = current.right;
+			}
+			if (current === null) {
+				return null;
+			}
+		}
+		return current;
+	}
+
+	isPresent(data) {
+		let current = this.root;
+		while (current) {
+		  if (data === current.data) {
+			 return true;
+		  }
 		  if (data < current.data) {
 			 current = current.left;
 		  } else {
 			 current = current.right;
 		  }
-		  if (current === null) {
-			 return null;
-		  }
 		}
-		return current;
+		return false;
 	 }
+
 
 }
