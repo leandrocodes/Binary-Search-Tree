@@ -63,17 +63,53 @@ class Tree {
 	isPresent(data) {
 		let current = this.root;
 		while (current) {
-		  if (data === current.data) {
-			 return true;
-		  }
-		  if (data < current.data) {
-			 current = current.left;
-		  } else {
-			 current = current.right;
-		  }
+			if (data === current.data) {
+				return true;
+			}
+			if (data < current.data) {
+				current = current.left;
+			} else {
+				current = current.right;
+			}
 		}
 		return false;
-	 }
+	}
+
+	remove(data) {
+		const removeNode = (node, data) => {
+			if (node == null) {
+				return null;
+			}
+			if (data == node.data) {
+				if (node.left == null && node.right == null) {
+					return null;
+				}
+
+				if (node.left == null) {
+					return node.right;
+				}
+
+				if (node.right == null) {
+					return node.left;
+				}
+
+				var tempNode = node.right;
+				while (tempNode.left !== null) {
+					tempNode = tempNode.left;
+				}
+				node.data = tempNode.data;
+				node.right = removeNode(node.right, tempNode.data);
+				return node;
+			} else if (data < node.data) {
+				node.left = removeNode(node.left, data);
+				return node;
+			} else {
+				node.right = removeNode(node.right, data);
+				return node;
+			}
+		}
+		this.root = removeNode(this.root, data);
+	}
 
 
 }
