@@ -17,7 +17,7 @@ class Tree {
 			this.root = new Node(data);
 			return;
 		} else {
-			const searchTree = (data) => {
+			const searchTree = (node) => {
 				if (data < node.data) {
 					if (node.left === null) {
 						node.left = new Node(data);
@@ -27,8 +27,10 @@ class Tree {
 					}
 				} else if (data > node.data) {
 					if (node.right === null) {
-						node.left = new Node(data);
+						node.right = new Node(data);
 						return;
+					} else if (node.right !== null) {
+						return searchTree(node.right);
 					}
 				} else {
 					return null;
@@ -111,5 +113,114 @@ class Tree {
 		this.root = removeNode(this.root, data);
 	}
 
+	findMinHeight(node = this.root) {
+		if (node == null) {
+			return -1;
+		}
+		let left = this.findMinHeight(node.left);
+		let right = this.findMinHeight(node.right);
+		if (left < right) {
+			return left + 1;
+		} else {
+			return right + 1;
+		}
+	}
 
+	findMaxHeight(node = this.root) {
+		if (node == null) {
+			return -1;
+		}
+		let left = this.findMaxHeight(node.left);
+		let right = this.findMaxHeight(node.right);
+
+		if (left > right) {
+			return left + 1;
+		} else {
+			return right + 1;
+		}
+
+	}
+
+	isBalanced() {
+		return (this.findMinHeight() >= this.findMaxHeight() - 1);
+	}
+
+	inOrder() {
+		if (this.root == null) {
+			return null;
+		} else {
+			var result = new Array();
+			function traverseInOrder(node) {
+				node.left && traverseInOrder(node.left);
+				result.push(node.data);
+				node.right && traverseInOrder(node.right);
+			};
+			traverseInOrder(this.root);
+			return result;
+		}
+	}
+
+	preOrder() {
+		if (this.root == null) {
+			return null;
+		} else {
+			var result = new Array();
+			function traversePreOrder(node) {
+				result.push(node.data);
+				node.left && traversePreOrder(node.left);
+				node.right && traversePreOrder(node.right);
+			};
+			traversePreOrder(this.root);
+			return result;
+		}
+	}
+
+	postOrder() {
+		if (this.root == null) {
+			return null;
+		} else {
+			var result = new Array();
+			function traversePostOrder(node) {
+				node.left && traversePostOrder(node.left);
+				node.right && traversePostOrder(node.right);
+				result.push(node.data);
+			};
+			traversePostOrder(this.root);
+			return result;
+		}
+	}
+
+	levelOrder() {
+		let result = [];
+		let Q = [];
+		if (this.root != null) {
+			Q.push(this.root);
+			while (Q.length > 0) {
+				let node = Q.shift();
+				result.push(node.data);
+				if (node.left != null) {
+					Q.push(node.left);
+				}
+				if (node.right != null) {
+					Q.push(node.right);
+				}
+			}
+			return result;
+		} else {
+			return null;
+		}
+	}
 }
+
+const tree = new Tree();
+
+tree.add(10);
+tree.add(9);
+tree.add(12);
+tree.add(8);
+tree.add(11);
+
+console.log('inOrder: ' + tree.inOrder());
+console.log('preOrder: ' + tree.preOrder());
+console.log('postOrder: ' + tree.postOrder());
+console.log('levelOrder: ' + tree.levelOrder());
