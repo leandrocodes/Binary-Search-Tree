@@ -220,7 +220,8 @@ tree.add(12);
 tree.add(8);
 tree.add(11);
 
-console.log('inOrder: ' + tree.inOrder());
 console.log('preOrder: ' + tree.preOrder());
-console.log('postOrder: ' + tree.postOrder());
-console.log('levelOrder: ' + tree.levelOrder());
+
+tree.remove(10);
+
+console.log('preOrder: ' + tree.preOrder());
